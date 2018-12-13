@@ -1,5 +1,8 @@
 #! /bin/bash
 
+let "numClients = $1 * 10"
+sed -i 's/tpcc.number.warehouses=[0-9]\+/tpcc.number.warehouses='"$1"'/g' tpc-c-0.1-SNAPSHOT/etc/workload-config.properties
+sed -i 's/clients=[0-9]\+/clients='"$numClients"'/g' tpc-c-0.1-SNAPSHOT/etc/workload-config.properties
 initdb -D tpcc-db
 sleep 5
 postgres -D tpcc-db -k. &
