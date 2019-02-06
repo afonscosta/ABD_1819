@@ -1,5 +1,8 @@
 #! /bin/bash
 
+#PRESERVAÇÃO DO FICHEIRO DE CONFIGURACAO DO POSTGRESQL
+cp tpcc-db/postgresql.conf ~/
+
 # REMOÇÃO DA BASE DE DADOS ANTERIOR
 rm -r tpcc-db
 
@@ -26,8 +29,14 @@ createdb -h localhost tpcc-db
 
 # RESTORE COM RECURSO AO FICHEIRO tpcc.dump
 echo '========== RESTORE INTIALIZED ========================='
-#time pg_restore -h localhost -d tpcc-db -Fc -j 8 tpcc.dump
+time pg_restore -h localhost -d tpcc-db -Fc -j 8 tpcc.dump
+
+#PRESERVACAO DO FICHEIRO DE CONFIGURACAO DO POSTGRESQL
+
+mv ~/postgresql.conf ~/tpcc-db/
 
 # TERMINAR A SESSÃO DO TMUX QUE ESTÁ A CORRER O POSTGRES
 tmux send-keys -t postgres "C-c"
 tmux kill-session -t postgres
+
+
